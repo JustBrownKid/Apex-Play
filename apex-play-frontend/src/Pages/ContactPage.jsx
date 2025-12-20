@@ -38,7 +38,7 @@ const ContactPage = () => {
                 <div className="mb-8">
                     <div className="flex items-center gap-2 mb-4">
                         <div className="h-[1px] w-8 bg-blue-500" />
-                        <span className="text-[15px] font-bold uppercase tracking-[0.4em] text-blue-500 underline decoration-blue-500/30 underline-offset-8">
+                        <span className="text-[12px] font-bold uppercase tracking-[0.4em] text-blue-500 underline decoration-blue-500/30 underline-offset-8">
                             Personal Inquiries // 07
                         </span>
                     </div>
