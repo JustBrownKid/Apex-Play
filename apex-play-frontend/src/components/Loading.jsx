@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Logo from '../assets/Apex-Banner-w.png';
+import Logo from '../assets/Apex-Banner-W.png';
 
 const Loading = () => {
     useEffect(() => {

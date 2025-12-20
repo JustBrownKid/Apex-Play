@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, Film, Tv, Info, Mail, Menu, X } from 'lucide-react';
-import Logo from '../assets/Apex-Banner-w.png';
+import Logo from '../assets/Apex-Banner-W.png';
 
 const Navbar = () => {
     const navigate = useNavigate();
