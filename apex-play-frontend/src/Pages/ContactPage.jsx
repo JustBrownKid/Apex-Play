@@ -42,7 +42,7 @@ const ContactPage = () => {
                             Personal Inquiries // 07
                         </span>
                     </div>
-                    <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.8] uppercase">
+                    <h1 className="text-5xl md:text-8xl  font-black tracking-tighter leading-[0.8] uppercase">
                         Let's <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-400 italic">Collaborate.</span>
                     </h1>
