@@ -19,41 +19,41 @@ import MaintenancePage from './Pages/MaintenancePage'
 function App() {
 
   return (
-    <MaintenancePage />
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path="/auth" element={
-    //       <ProtectedAuthRoute>
-    //         <AuthPage />
-    //       </ProtectedAuthRoute>
-    //     } />
-    //     <Route element={<MainLayout />}>
+    // <MaintenancePage />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/auth" element={
+          <ProtectedAuthRoute>
+            <AuthPage />
+          </ProtectedAuthRoute>
+        } />
+        <Route element={<MainLayout />}>
 
-    //       <Route path="/" element={<Navbar />} />
-    //       <Route
-    //         path="/download"
-    //         element={
-    //           <ProtectedRoute>
-    //             <Download />
-    //           </ProtectedRoute>
-    //         }
-    //       />
-    //       <Route index element={<Home />} />
+          <Route path="/" element={<Navbar />} />
+          <Route
+            path="/download"
+            element={
+              <ProtectedRoute>
+                <Download />
+              </ProtectedRoute>
+            }
+          />
+          <Route index element={<Home />} />
 
-    //       <Route path="/movies" element={<MoviePage />} />
-    //       <Route path="/series" element={<SeriesPage />} />
-    //       <Route path="/about" element={<AboutPage />} />
-    //       <Route path="/contact" element={<ContactPage />} />
-    //     </Route>
-    //     <Route path="/movie/:id" element={<MovieDetails />} />
+          <Route path="/movies" element={<MoviePage />} />
+          <Route path="/series" element={<SeriesPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Route>
+        <Route path="/movie/:id" element={<MovieDetails />} />
 
-    //     <Route path="/series/:id" element={<SeriesDetails />} />
+        <Route path="/series/:id" element={<SeriesDetails />} />
 
 
 
-    //   </Routes>
+      </Routes>
 
-    // </BrowserRouter>
+    </BrowserRouter>
   )
 }
 
