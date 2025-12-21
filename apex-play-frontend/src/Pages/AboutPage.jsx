@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Shield, Zap, HardDrive, Cpu, Globe, Download, Unlock } from 'lucide-react';
 
 const AboutPage = () => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     return (
         <div className="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-blue-500/30">
             <div className="max-w-4xl mx-auto pt pb-20 px-6">

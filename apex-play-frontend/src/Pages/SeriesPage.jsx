@@ -30,6 +30,7 @@ const SeriesPage = () => {
 
     useEffect(() => {
         fetchSeries();
+        window.scrollTo(0, 0);
     }, []);
 
     const categories = ['All', ...new Set(seriesList.flatMap(s => s.categories?.map(c => c.category.name) || []))];

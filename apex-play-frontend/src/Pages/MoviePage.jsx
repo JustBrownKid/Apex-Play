@@ -4,6 +4,7 @@ import { Search, Film, X, SlidersHorizontal } from 'lucide-react';
 import MovieCard from '../components/MovieCard';
 import Loading from '../components/Loading';
 import ErrorPage from '../components/Error';
+import UniversalFooter from '../components/Footer';
 
 const MoviePage = () => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const MoviePage = () => {
 
     useEffect(() => {
         fetchMovies();
+        window.scrollTo(0, 0);
     }, []);
 
     const categories = ['All', ...new Set(movies.flatMap(m => m.categories?.map(c => c.category.name) || []))];
@@ -112,12 +114,12 @@ const MoviePage = () => {
                     </div>
                 )}
             </main>
-
             <style>{`
                 .scrollbar-hide::-webkit-scrollbar { display: none; }
                 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>
         </div>
+
     );
 };
 

@@ -7,7 +7,6 @@ const UniversalFooter = () => {
         <footer className="w-full mt-24 border-t border-white/5 bg-[#020617] pt-12 pb-8">
             <div className="max-w-6xl mx-auto px-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-
                     <div className="">
                         <div className="w-40 h-15 items-center justify-center  group">
                             <img

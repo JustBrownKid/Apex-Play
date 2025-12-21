@@ -45,6 +45,7 @@ const Home = () => {
                 setLoading(false);
             }
         };
+        window.scrollTo(0, 0);
         fetchData();
     }, []);
 
