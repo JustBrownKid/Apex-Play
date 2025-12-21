@@ -16,5 +16,5 @@ export const users = pgTable('users', {
     role: roleEnum('role').default('user').notNull(),
     email: text('email').unique().notNull(),
     password: text('password').notNull(),
-   
+
 });

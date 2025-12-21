@@ -50,6 +50,7 @@ async function main() {
                 serieId: serie.id,
                 castId: randomCasts[idx].id,
                 priority: idx + 1,
+                role: faker.person.fullName(),
             });
         }
 
@@ -87,6 +88,7 @@ async function main() {
                 movieId: movie.id,
                 castId: randomCasts[idx].id,
                 priority: idx + 1,
+                role: faker.person.fullName(),
             });
         }
     }

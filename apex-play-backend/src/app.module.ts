@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MovieModule } from './movie/movie.module';
 import { SeriesModule } from './series/series.module';
 import { JwtModule } from '@nestjs/jwt';
+import { CastModule } from './cast/cast.module';
+import { EpisodeModule } from './episode/episode.module';
 
 @Module({
   imports: [UserModule, DrizzleModule,
@@ -29,6 +31,8 @@ import { JwtModule } from '@nestjs/jwt';
     CategoryModule,
     MovieModule,
     SeriesModule,
+    CastModule,
+    EpisodeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

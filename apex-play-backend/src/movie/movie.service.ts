@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
@@ -13,8 +13,37 @@ export class MovieService {
 
   ) { }
 
-  create(createMovieDto: CreateMovieDto) {
-    return 'This action adds a new movie';
+  async create(createMovieDto: CreateMovieDto) {
+    const newMovie = await this.db.transaction(async (t) => {
+      const [movie] = await t.insert(schema.movies).values({
+        title: createMovieDto.title,
+        description: createMovieDto.description,
+        releaseYear: createMovieDto.releaseYear,
+        duration: createMovieDto.duration,
+        videoUrl: createMovieDto.videoUrl,
+        rating: createMovieDto.rating,
+        backdropUrl: createMovieDto.backdropUrl,
+        posterUrl: createMovieDto.posterUrl,
+      }).returning()
+      if (createMovieDto.castMembers?.length) {
+        const movieCastValues = createMovieDto.castMembers.map((C) => ({
+          movieId: movie.id,
+          castId: C.castId,
+          priority: C.priority,
+          role: C.role
+        }));
+        await t.insert(schema.moviesToCasts).values(movieCastValues);
+      }
+      if (createMovieDto.categoryIds?.length) {
+        const movieCategoryValues = createMovieDto.categoryIds.map((categoryId) => ({
+          movieId: movie.id,
+          categoryId: categoryId,
+        }));
+        await t.insert(schema.moviesToCategories).values(movieCategoryValues);
+      }
+      return movie;
+    });
+    return newMovie;
   }
 
   async findByCategory(id: number) {
@@ -83,14 +112,53 @@ export class MovieService {
         }
       }
     })
+    if (!movie) throw new NotFoundException(`Movie with ID ${id} not found`);
     return movie;
   }
 
-  update(id: number, updateMovieDto: UpdateMovieDto) {
-    return `This action updates a #${id} movie`;
+  async update(id: number, updateMovieDto: UpdateMovieDto) {
+    const updateMovie = await this.db.transaction(async (t) => {
+      const [movie] = await t.update(schema.movies).set({
+        title: updateMovieDto.title,
+        description: updateMovieDto.description,
+        releaseYear: updateMovieDto.releaseYear,
+        duration: updateMovieDto.duration,
+        videoUrl: updateMovieDto.videoUrl,
+        rating: updateMovieDto.rating,
+        backdropUrl: updateMovieDto.backdropUrl,
+        posterUrl: updateMovieDto.posterUrl,
+      }).returning()
+
+      if (!movie) {
+        throw new NotFoundException(`Movie with ID ${id} not found`);
+      }
+
+      if (updateMovieDto?.castMembers) {
+        await t.delete(schema.moviesToCasts).where(eq(schema.moviesToCasts.movieId, id))
+        const movieCast = updateMovieDto.castMembers.map((C) => ({
+          movieId: movie.id,
+          castId: C.castId,
+          priority: C.priority,
+          role: C.role
+        }))
+        await t.insert(schema.moviesToCasts).values(movieCast);
+      }
+
+      if (updateMovieDto?.categoryIds) {
+        await t.delete(schema.moviesToCategories).where(eq(schema.moviesToCategories.movieId, id));
+        const movieCategory = updateMovieDto.categoryIds.map((categoryId) => ({
+          movieId: movie.id,
+          categoryId: categoryId,
+        }))
+        await t.insert(schema.moviesToCategories).values(movieCategory);
+      }
+      return movie
+    })
+    return updateMovie;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} movie`;
+  async remove(id: number) {
+    const movie = await this.db.delete(schema.movies).where(eq(schema.movies.id, id)).returning();
+    return movie;
   }
 }

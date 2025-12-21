@@ -13,10 +13,8 @@ export const movies = pgTable('movies', {
     duration: integer('duration'),
     posterUrl: text('poster_url'),
     backdropUrl: text('backdrop_url'),
-    trailerUrl: text('trailer_url'),
     videoUrl: text('video_url'),
     rating: varchar('rating', { length: 10 }),
-    imdbId: varchar('imdb_id', { length: 20 }),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
