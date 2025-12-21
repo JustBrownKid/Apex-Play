@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Play, Star, Film, Tv, Info, Sparkles, Flame, History } from 'lucide-react';
 import Loading from '../components/Loading';
 import HorizontalScroll from '../components/HorizontalScroll';
+import HeroAdsSlider from '../components/HeroAdsSlider';
+import FeatureBanner from '../components/FeatureBanner';
 
 const Home = () => {
     const [heroMovie, setHeroMovie] = useState(null);
@@ -12,6 +14,7 @@ const Home = () => {
     const [seriesCat2, setSeriesCat2] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,6 +29,7 @@ const Home = () => {
                     fetch(`${apiUrl}/series/category/2`),
                 ]);
 
+
                 const allMovies = await allMoviesRes.json();
                 const mCat1Data = await mCat1Res.json();
                 const mCat2Data = await mCat2Res.json();
@@ -33,7 +37,6 @@ const Home = () => {
                 const sCat2Data = await sCat2Res.json();
 
                 if (allMovies.length > 0) setHeroMovie(allMovies[allMovies.length - 1]);
-
                 setMovieCat1(Array.isArray(mCat1Data) ? [...mCat1Data].reverse() : []);
                 setMovieCat2(Array.isArray(mCat2Data) ? [...mCat2Data].reverse() : []);
                 setSeriesCat1(Array.isArray(sCat1Data) ? [...sCat1Data].reverse() : []);
@@ -53,9 +56,8 @@ const Home = () => {
 
     return (
         <div className="min-h-screen bg-slate-950 text-white pb-20 overflow-x-hidden font-sans">
-
+            <HeroAdsSlider />
             <div className="relative z-20 space-y-4">
-
                 {movieCat1.length > 0 && (
                     <HorizontalScroll
                         title="New Releases"
@@ -65,7 +67,7 @@ const Home = () => {
                         viewAllLink="/movies"
                     />
                 )}
-
+                {!token && <FeatureBanner />}
                 {movieCat2.length > 0 && (
                     <HorizontalScroll
                         title="Top Action Hits"

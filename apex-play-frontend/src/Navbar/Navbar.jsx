@@ -28,7 +28,7 @@ const Navbar = () => {
                     <img src={Logo} alt="Apex Logo" className="w-full h-auto object-contain" />
                 </div>
 
-                <ul className="hidden md:flex items-center gap-2 lg:gap-4">
+                <ul className="hidden md:flex items-center gap-2 lg:gap-2">
                     {navLinks.map((link) => (
                         <li key={link.name}>
                             <button

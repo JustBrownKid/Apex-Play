@@ -20,12 +20,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/auth" element={
+          <ProtectedAuthRoute>
+            <AuthPage />
+          </ProtectedAuthRoute>
+        } />
         <Route element={<MainLayout />}>
-          <Route path="/auth" element={
-            <ProtectedAuthRoute>
-              <AuthPage />
-            </ProtectedAuthRoute>
-          } />
+
           <Route path="/" element={<Navbar />} />
           <Route
             path="/download"
