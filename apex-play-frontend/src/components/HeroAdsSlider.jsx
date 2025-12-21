@@ -1,10 +1,9 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
+import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
-import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 
 const HeroAdsSlider = () => {
@@ -68,19 +67,19 @@ const HeroAdsSlider = () => {
     ];
 
     return (
-        <div className="w-full h-[50vh] md:h-[75vh] relative group overflow-hidden">
+        <div className="w-full h-[50vh] md:h-[75vh] relative group overflow-hidden bg-slate-950">
             <Swiper
-                modules={[Autoplay, Pagination, Navigation, EffectFade]}
+                modules={[Autoplay, Pagination, EffectFade]}
                 effect={'fade'}
                 loop={true}
-                speed={500}
+                speed={800}
                 autoplay={{
-                    delay: 3000,
+                    delay: 4000,
                     disableOnInteraction: false,
                     pauseOnMouseEnter: true,
                 }}
                 pagination={{ clickable: true }}
-                navigation={true}
+                navigation={false}
                 className="w-full h-full"
             >
                 {adsData.map((ad) => (
@@ -91,18 +90,17 @@ const HeroAdsSlider = () => {
                                 alt={ad.title}
                                 className="w-full h-full object-cover"
                             />
-
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-                            <div className="absolute inset-0 bg-black/30" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+                            <div className="absolute inset-0 bg-black/20" />
 
                             <div className="absolute bottom-0 left-0 p-8 md:p-20 w-full z-10">
-                                <span className="bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block">
+                                <span className="bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block shadow-lg">
                                     {ad.tag}
                                 </span>
-                                <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter mb-4 text-white leading-none">
+                                <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter mb-4 text-white leading-[0.9]">
                                     {ad.title}
                                 </h2>
-                                <p className="text-slate-200 text-sm md:text-lg max-w-2xl font-medium opacity-90">
+                                <p className="text-slate-200 text-sm md:text-lg max-w-2xl font-medium opacity-90 leading-relaxed">
                                     {ad.desc}
                                 </p>
                             </div>
@@ -112,31 +110,19 @@ const HeroAdsSlider = () => {
             </Swiper>
 
             <style>{`
-                .swiper-button-next, .swiper-button-prev {
-                    color: white !important;
-                    background: rgba(255,255,255,0.1);
-                    width: 45px;
-                    height: 45px;
-                    border-radius: 50%;
-                    backdrop-filter: blur(8px);
-                    opacity: 0;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                }
-                .group:hover .swiper-button-next, .group:hover .swiper-button-prev {
-                    opacity: 1;
-                }
-                .swiper-button-next:after, .swiper-button-prev:after {
-                    font-size: 18px !important;
-                }
                 .swiper-pagination-bullet {
                     background: white !important;
-                    opacity: 0.5;
+                    opacity: 0.3;
+                    transition: all 0.3s ease;
                 }
                 .swiper-pagination-bullet-active {
-                    background: #8F00FF  !important;
-                    width: 25px !important;
+                    background: #8F00FF !important;
+                    width: 30px !important;
                     border-radius: 4px !important;
                     opacity: 1;
+                }
+                .swiper-pagination {
+                    bottom: 30px !important;
                 }
             `}</style>
         </div>

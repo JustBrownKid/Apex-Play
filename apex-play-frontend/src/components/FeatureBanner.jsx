@@ -8,13 +8,11 @@ const FeatureBanner = () => {
     return (
         <div className="mx-6 md:mx-16 my-10 p-8 md:p-10 rounded-3xl bg-slate-900 border border-white/5 relative overflow-hidden shadow-xl">
 
-            {/* Subtle Glow - အရမ်းမလင်းအောင် လျှော့ထားပါတယ် */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-[80px]"></div>
 
             <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
 
                 <div className="text-center md:text-left">
-                    {/* Compact Badge */}
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-4">
                         <HardDriveDownload size={14} /> High-Speed Servers
                     </div>
@@ -29,7 +27,6 @@ const FeatureBanner = () => {
                         Safe, Secure & Always Fast.
                     </p>
 
-                    {/* Small Status Indicators */}
                     <div className="flex flex-wrap justify-center md:justify-start gap-4">
                         <div className="flex items-center gap-2 px-3 py-2 bg-white/5 rounded-xl border border-white/5">
                             <ShieldCheck size={16} className="text-blue-500" />
@@ -42,7 +39,6 @@ const FeatureBanner = () => {
                     </div>
                 </div>
 
-                {/* Compact Action Button */}
                 <div className="w-full md:w-auto min-w-[240px]">
                     <button
                         onClick={() => navigate('/auth')}
