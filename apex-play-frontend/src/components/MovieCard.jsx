@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Star } from 'lucide-react';
-
+import Logo from '../assets/Apex-tw.png'
 const MovieCard = ({ item, onClick }) => {
+    const [isLoaded, setIsLoaded] = useState(false);
     return (
         <div
             className="group relative bg-slate-900 rounded-xl overflow-hidden shadow-xl border border-white/5 cursor-pointer aspect-[2/3] w-full transition-all duration-500 hover:scale-[1.03] hover:border-blue-500/50"
             onClick={() => onClick(item.id)}
         >
-            <img
-                src={item.posterUrl || item.image}
-                alt={item.title}
-                className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:blur-[1px]"
-                loading="lazy"
-                onError={(e) => { e.target.src = 'https://via.placeholder.com/300x450?text=No+Poster'; }}
-            />
+            <div className="relative w-full h-full bg-gray-900 overflow-hidden">
+                {!isLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <img src={Logo} alt="Logo" className="w-auto h-auto opacity-50" />
+                    </div>
+                )}
+
+                <img
+                    src={item.posterUrl || item.image}
+                    alt={item.title}
+                    className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:blur-[1px] ${isLoaded ? 'opacity-100' : 'opacity-0'
+                        }`}
+                    loading="lazy"
+                    onLoad={() => setIsLoaded(true)}
+                    onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/300x450?text=No+Poster';
+                        setIsLoaded(true);
+                    }}
+                />
+            </div>
 
             {item.rating && (
                 <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg text-[10px] font-black border border-white/10 flex items-center gap-1 z-10">

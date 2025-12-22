@@ -2,7 +2,6 @@ const CastCard = ({ item }) => {
     if (!item?.cast) return null;
     return (
         <div className="flex-none w-32 sm:w-40 group snap-start cursor-pointer">
-            {/* Image Container */}
             <div className="relative aspect-square mb-4 overflow-hidden rounded-2xl ring-1 ring-white/10 group-hover:ring-blue-500/50 transition-all duration-500 shadow-lg bg-slate-900">
                 <img
                     src={item.cast.imageUrl || 'https://via.placeholder.com/300x300?text=No+Image'}
