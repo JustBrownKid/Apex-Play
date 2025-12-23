@@ -17,10 +17,33 @@ const SeriesPage = () => {
         try {
             setLoading(true);
             const apiUrl = import.meta.env.VITE_API_URL;
-            const response = await fetch(`${apiUrl}/series`);
+            const graphqlQuery = {
+                query: `
+                    query GetSeriesList {
+                        series {
+                        id
+                        title
+                        rating
+                        posterUrl
+                         categories {
+                                category {
+                                    name
+                                }
+                            }
+                        }
+                    }
+                    `
+            };
+            const response = await fetch(`${apiUrl}/graphql`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(graphqlQuery),
+            });
             if (!response.ok) throw new Error('Failed to fetch series');
             const data = await response.json();
-            setSeriesList(data);
+            setSeriesList(data.data.series);
         } catch (err) {
             setError(err.message);
         } finally {

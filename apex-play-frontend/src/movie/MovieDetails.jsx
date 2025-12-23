@@ -19,6 +19,18 @@ const MovieDetails = () => {
     const [error, setError] = useState(null);
 
 
+    const GET_RELATED_MOVIES = `
+        query GetRelated($catId: Int!) {
+            moviesByCategory(categoryId: $catId) {
+            id
+            title
+            posterUrl
+            duration
+            rating
+            }
+        }
+        `;
+
     useEffect(() => {
         const fetchMovieDetail = async () => {
             setLoading(true);
@@ -27,15 +39,21 @@ const MovieDetails = () => {
                 if (!response.ok) throw new Error('Movie not found');
                 const data = await response.json();
                 setMovie(data);
-                if (data.categories && data.categories.length > 0) {
-                    const firstCatId = data.categories[0].categoryId;
+                if (data?.categories?.length > 0) {
+                    const firstCatId = data.categories[0].category.id;
+                    const response = await fetch(`${import.meta.env.VITE_API_URL}/graphql`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            query: GET_RELATED_MOVIES,
+                            variables: { catId: firstCatId }
+                        }),
+                    });
 
-                    const catResponse = await fetch(`${import.meta.env.VITE_API_URL}/movie/category/${firstCatId}`);
-                    if (catResponse.ok) {
-                        const catData = await catResponse.json();
-
-                        const filteredData = catData.filter(m => m.id !== parseInt(id));
-                        setMovieCategory(filteredData);
+                    const result = await response.json();
+                    if (result.data) {
+                        const filtered = result.data.moviesByCategory.filter(m => m.id !== data.id);
+                        setMovieCategory(filtered);
                     }
                 }
             } catch (error) {

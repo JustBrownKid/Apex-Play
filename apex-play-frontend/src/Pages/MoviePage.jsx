@@ -18,10 +18,34 @@ const MoviePage = () => {
         try {
             setLoading(true);
             const apiUrl = import.meta.env.VITE_API_URL;
-            const response = await fetch(`${apiUrl}/movie`);
+            const graphqlQuery = {
+                query: `
+                    query GetSeries {
+                        movies {
+                            id
+                            posterUrl
+                            rating
+                            duration
+                            title
+                            categories {
+                                category {
+                                    name
+                                }
+                            }
+                        }
+                    }
+                    `
+            };
+            const response = await fetch(`${apiUrl}/graphql`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(graphqlQuery),
+            });
             if (!response.ok) throw new Error('Failed to connect to movie database');
             const data = await response.json();
-            setMovies(data);
+            setMovies(data.data.movies);
         } catch (err) {
             setError(err.message);
         } finally {

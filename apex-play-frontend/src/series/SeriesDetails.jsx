@@ -19,6 +19,18 @@ const SeriesDetails = () => {
     const [error, setError] = useState(null);
     const [activeSeason, setActiveSeason] = useState(1);
 
+
+    const GET_RELATED_MOVIES = `
+        query GetRelated($catId: Int!) {
+            seriesByCategory(categoryId: $catId) {
+            id
+            title
+            posterUrl
+            rating
+            }
+        }
+        `;
+
     useEffect(() => {
         const fetchSeriesDetail = async () => {
             setLoading(true);
@@ -33,14 +45,21 @@ const SeriesDetails = () => {
                     const firstSeason = Math.min(...data.episodes.map(ep => ep.seasonNumber));
                     setActiveSeason(firstSeason);
                 }
-                if (data.categories && data.categories.length > 0) {
-                    const firstCatId = data.categories[0].categoryId;
+                if (data?.categories?.length > 0) {
+                    const firstCatId = data.categories[0].category.id;
+                    const response = await fetch(`${import.meta.env.VITE_API_URL}/graphql`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            query: GET_RELATED_MOVIES,
+                            variables: { catId: firstCatId }
+                        }),
+                    });
 
-                    const catResponse = await fetch(`${import.meta.env.VITE_API_URL}/series/category/${firstCatId}`);
-                    if (catResponse.ok) {
-                        const catData = await catResponse.json();
-                        const filteredData = catData.filter(m => m.id !== parseInt(id));
-                        setSeriesCategory(filteredData);
+                    const result = await response.json();
+                    if (result.data) {
+                        const filtered = result.data.seriesByCategory.filter(s => s.id !== data.id);
+                        setSeriesCategory(filtered);
                     }
                 }
                 setError(null);
