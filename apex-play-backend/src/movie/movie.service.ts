@@ -10,9 +10,21 @@ import { eq, and, exists } from 'drizzle-orm';
 export class MovieService {
   constructor(
     @Inject(DRIZZLE) private db: NodePgDatabase<typeof schema>
-
   ) { }
-
+  // for Graphql
+  async findAllOptimized(limit: number = 100) {
+    return await this.db
+      .select({
+        id: schema.movies.id,
+        title: schema.movies.title,
+        posterUrl: schema.movies.posterUrl,
+        rating: schema.movies.rating,
+        duration: schema.movies.duration,
+        releaseYear: schema.movies.releaseYear,
+      })
+      .from(schema.movies)
+      .limit(limit);
+  }
   async create(createMovieDto: CreateMovieDto) {
     const newMovie = await this.db.transaction(async (t) => {
       const [movie] = await t.insert(schema.movies).values({
@@ -127,7 +139,7 @@ export class MovieService {
         rating: updateMovieDto.rating,
         backdropUrl: updateMovieDto.backdropUrl,
         posterUrl: updateMovieDto.posterUrl,
-      }).returning()
+      }).where(eq(schema.movies.id, id)).returning()
 
       if (!movie) {
         throw new NotFoundException(`Movie with ID ${id} not found`);

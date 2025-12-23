@@ -14,6 +14,20 @@ export class SeriesService {
     @Inject(DRIZZLE) private readonly db: NodePgDatabase<typeof schema>
   ) { }
 
+  // for Graphql
+  async findAllOptimized(limit: number = 100) {
+    return await this.db
+      .select({
+        id: schema.series.id,
+        title: schema.series.title,
+        posterUrl: schema.series.posterUrl,
+        rating: schema.series.rating,
+        releaseYear: schema.series.releaseYear,
+      })
+      .from(schema.series)
+      .limit(limit);
+  }
+
   async create(createSeriesDto: CreateSeriesDto) {
     const newSeries = await this.db.transaction(async (t) => {
       const [series] = await t.insert(schema.series).values({

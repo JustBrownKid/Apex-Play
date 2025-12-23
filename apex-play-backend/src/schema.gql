@@ -1,0 +1,23 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Movie {
+  id: Int!
+  posterUrl: String!
+  rating: String!
+  duration: Float!
+  title: String!
+}
+
+type Series {
+  id: Int!
+  title: String!
+  posterUrl: String!
+  rating: String!
+}
+
+type Query {
+  movies(limit: Int): [Movie!]!
+  series(limit: Int): [Series!]!
+}

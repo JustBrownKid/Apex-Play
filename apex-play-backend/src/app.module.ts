@@ -10,6 +10,10 @@ import { SeriesModule } from './series/series.module';
 import { JwtModule } from '@nestjs/jwt';
 import { CastModule } from './cast/cast.module';
 import { EpisodeModule } from './episode/episode.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { join } from 'path';
 
 @Module({
   imports: [UserModule, DrizzleModule,
@@ -27,7 +31,13 @@ import { EpisodeModule } from './episode/episode.module';
       }),
       inject: [ConfigService],
     }),
-
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      stopOnTerminationSignals: false,
+    }),
     CategoryModule,
     MovieModule,
     SeriesModule,
