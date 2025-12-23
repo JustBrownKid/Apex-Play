@@ -3,7 +3,7 @@ import { CreateSeriesDto } from './dto/create-series.dto';
 import { UpdateSeriesDto } from './dto/update-series.dto';
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { privateDecrypt } from 'crypto';
-import { schema, seriesToCasts } from 'src/drizzle';
+import { categories, schema, seriesToCasts } from 'src/drizzle';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, and, exists } from 'drizzle-orm';
 
@@ -16,16 +16,50 @@ export class SeriesService {
 
   // for Graphql
   async findAllOptimized(limit: number = 100) {
-    return await this.db
-      .select({
-        id: schema.series.id,
-        title: schema.series.title,
-        posterUrl: schema.series.posterUrl,
-        rating: schema.series.rating,
-        releaseYear: schema.series.releaseYear,
-      })
-      .from(schema.series)
-      .limit(limit);
+    return await this.db.query.series.findMany({
+      limit: limit,
+      columns: {
+        id: true,
+        title: true,
+        posterUrl: true,
+        rating: true,
+        releaseYear: true,
+      },
+      with: {
+        categories: {
+          with: {
+            category: {
+              columns: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async findSeriesByCategory(categoryId: number) {
+    return await this.db.query.series.findMany({
+      where: (series, { exists }) =>
+        exists(
+          this.db.select()
+            .from(schema.seriesToCategories)
+            .where(
+              and(
+                eq(schema.seriesToCategories.serieId, series.id),
+                eq(schema.seriesToCategories.categoryId, categoryId)
+              )
+            )
+        ),
+      with: {
+        categories: {
+          with: {
+            category: true
+          }
+        }
+      }
+    });
   }
 
   async create(createSeriesDto: CreateSeriesDto) {

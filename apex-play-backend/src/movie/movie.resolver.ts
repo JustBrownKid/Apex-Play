@@ -10,4 +10,11 @@ export class MovieResolver {
     async getAll(@Args('limit', { type: () => Int, nullable: true }) limit: number) {
         return this.movieService.findAllOptimized(limit);
     }
+
+    @Query(() => [Movie], { name: 'moviesByCategory' })
+    async getMoviesByCategory(
+        @Args('categoryId', { type: () => Int }) categoryId: number,
+    ) {
+        return this.movieService.findMoviesByCategory(categoryId);
+    }
 }

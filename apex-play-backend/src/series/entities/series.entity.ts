@@ -1,5 +1,16 @@
 import { ObjectType, Field, Int } from "@nestjs/graphql";
 
+@ObjectType('SeriesCategoryInfo')
+export class Category {
+    @Field()
+    name: string;
+}
+
+@ObjectType()
+export class SeriesToCategory {
+    @Field(() => Category)
+    category: Category;
+}
 @ObjectType()
 export class Series {
     @Field(() => Int)
@@ -14,4 +25,6 @@ export class Series {
     @Field()
     rating: string;
 
+    @Field(() => [SeriesToCategory])
+    categories: SeriesToCategory[];
 }

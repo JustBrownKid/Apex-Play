@@ -13,18 +13,54 @@ export class MovieService {
   ) { }
   // for Graphql
   async findAllOptimized(limit: number = 100) {
-    return await this.db
-      .select({
-        id: schema.movies.id,
-        title: schema.movies.title,
-        posterUrl: schema.movies.posterUrl,
-        rating: schema.movies.rating,
-        duration: schema.movies.duration,
-        releaseYear: schema.movies.releaseYear,
-      })
-      .from(schema.movies)
-      .limit(limit);
+    return await this.db.query.movies.findMany({
+      limit: limit,
+      columns: {
+        id: true,
+        title: true,
+        posterUrl: true,
+        rating: true,
+        duration: true,
+        releaseYear: true,
+      },
+      with: {
+        categories: {
+          with: {
+            category: {
+              columns: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
+
+  async findMoviesByCategory(categoryId: number) {
+    return await this.db.query.movies.findMany({
+      where: (movies, { exists }) =>
+        exists(
+          this.db.select()
+            .from(schema.moviesToCategories)
+            .where(
+              and(
+                eq(schema.moviesToCategories.movieId, movies.id),
+                eq(schema.moviesToCategories.categoryId, categoryId)
+              )
+            )
+        ),
+      with: {
+        categories: {
+          with: {
+            category: true
+          }
+        }
+      }
+    });
+  }
+
+
   async create(createMovieDto: CreateMovieDto) {
     const newMovie = await this.db.transaction(async (t) => {
       const [movie] = await t.insert(schema.movies).values({

@@ -12,4 +12,11 @@ export class SeriesResolver {
     async getAll(@Args('limit', { type: () => Int, nullable: true }) limit: number) {
         return this.seriesService.findAllOptimized();
     }
+
+    @Query(() => [Series], { name: 'seriesByCategory' })
+    async getSeriesByCategory(
+        @Args('categoryId', { type: () => Int }) categoryId: number,
+    ) {
+        return this.seriesService.findSeriesByCategory(categoryId);
+    }
 }
