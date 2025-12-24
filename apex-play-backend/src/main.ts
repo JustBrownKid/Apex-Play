@@ -14,6 +14,7 @@ async function bootstrap() {
     origin: [
       'https://apex-play.netlify.app',
       'http://localhost:5173',
+      'https://apex-play.brownsley.online'
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
